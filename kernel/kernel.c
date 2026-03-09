@@ -1,5 +1,5 @@
 /*
-IMPORTANT REMINDER: Most std libs are available since we are using freestanding and not hosted.
+IMPORTANT REMINDER: Most std libs are NOT available since we are using freestanding and not hosted.
 
 C refresher:
 
@@ -7,7 +7,7 @@ static: function limits the visibility to this file only. other .c files can't s
 This helps us prevent name collisions.
 
 inline: hints the compiler to 
-"Juste paste code wher called instead of doing a function call"
+"Just paste code where called instead of doing a function call"
 no call overhead no stack frame.
 */
 
@@ -27,8 +27,8 @@ no call overhead no stack frame.
 #endif
 
 /*
- VGA text mode: 80x25 grid of caracters. Each cell has foreground (the char)
- and a background color. 16 hardwired colors, values fixed by VGA stardards since 80s.
+ VGA text mode: 80x25 grid of characters. Each cell has foreground (the char)
+ and a background color. 16 hardwired colors, values fixed by VGA standards since 80s.
  */
 enum vga_color {
 	VGA_COLOR_BLACK = 0,
@@ -50,7 +50,7 @@ enum vga_color {
 };
 
 /*
-  VGA expects foreground background packled into single byte.
+  VGA expects foreground background packed into single byte.
   Layout is bits: [7 6 5 4] [3 2 1 0]
                     bg         fg
   bg << 4 just shifts the bg to correct starting bit
@@ -81,7 +81,7 @@ size_t strlen(const char* str)
 
 
 /*
-Hardware contants. Hardwired by the VGA stardard, never changes.
+Hardware constants. Hardwired by the VGA standard, never changes.
 0xB8000 is the physical memory address of the VGA text buffer, shows on screen.
 */
 #define VGA_WIDTH  80
@@ -103,7 +103,7 @@ uint16_t* terminal_buffer = (uint16_t*)VGA_MEMORY;
  row1: 80..159
  rown: n*VGA_WIDTH, (n+1)VGA_*WIDTH-1
 
- Index of cursor: y + VGA_WIDTH + x
+ Index of cursor: y * VGA_WIDTH + x
 */
 void terminal_initialize(void)
 {
@@ -124,7 +124,7 @@ void terminal_setcolor(uint8_t color)
   terminal_color = color;
 }
 
-// Writes s single character at a specfic (x,y)
+// Writes a single character at a specific (x,y)
 void terminal_putentryat(char c, uint8_t color, size_t x, size_t y)
 {
   const size_t index = y * VGA_WIDTH + x;
