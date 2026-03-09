@@ -11,9 +11,13 @@ jmOS/
 ├── boot/
 │   ├── boot.asm      # bootloader entry point
 │   └── NOTES.md      # notes on how boot.asm works
+├── kernel/
+│   └── kernel.c      # bare metal C kernel with VGA text mode driver
 ├── Makefile
 └── CROSS_COMPILER.md # how to build the cross-compiler
 ```
+
+the kernel writes "Hello, kernel World!" to the screen using direct VGA memory writes at 0xB8000.
 
 ---
 
@@ -50,6 +54,7 @@ make clean   # clean up
 lost after a break? start here:
 
 - **what does boot.asm do?** read `boot/NOTES.md`
+- **what does kernel.c do?** VGA text mode driver, writes directly to video memory
 - **cross-compiler broken?** check your `$PATH`, see `CROSS_COMPILER.md`
 - **osdev wiki:** https://wiki.osdev.org/Main_Page
 
