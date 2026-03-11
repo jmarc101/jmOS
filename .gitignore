@@ -1,0 +1,11 @@
+# Build artifacts
+*.o
+*.iso
+*.elf
+*.bin
+
+# Kernel binary
+jmOS-*
+
+# ISO staging directory
+isodir/
