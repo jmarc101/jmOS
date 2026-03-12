@@ -1,5 +1,7 @@
 ## Next Steps
 
+READ https://wiki.osdev.org/GDT_Tutorial
+
 ### Recommended Order
 
 1. **GDT (Global Descriptor Table)**
