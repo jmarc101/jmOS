@@ -271,3 +271,100 @@ make run
 - [ ] Update `Makefile`
 - [ ] Delete `kernel/kernel.c`
 - [ ] Test with `make run`
+
+---
+
+## Next Steps (After Refactoring)
+
+### Recommended Order
+
+1. **GDT (Global Descriptor Table)**
+   - Set up your own segments instead of relying on bootloader's
+   - Understand protected mode segmentation
+
+2. **IDT (Interrupt Descriptor Table)**
+   - Handle CPU exceptions (divide by zero, page faults, etc.)
+   - Foundation for everything else
+
+3. **PIT Timer (Programmable Interval Timer)**
+   - First hardware interrupt (IRQ0)
+   - Gives you a heartbeat/tick
+
+4. **Keyboard Driver**
+   - PS/2 keyboard via IRQ1
+   - Now you can actually interact with your OS
+
+5. **Simple Shell**
+   - Read input, parse commands, execute
+   - Tie it all together
+
+### Why This Order
+
+```
+GDT → IDT → PIT → Keyboard → Shell
+         ↓
+    (interrupts required)
+```
+
+You can't handle keyboard or timer without interrupts. You need GDT set up properly before IDT.
+
+### Resources
+
+- [OSDev Wiki - GDT](https://wiki.osdev.org/GDT)
+- [OSDev Wiki - IDT](https://wiki.osdev.org/IDT)
+- James Molloy's kernel tutorials
+
+---
+
+## Makefile Syntax Reference
+
+### Variables
+
+```makefile
+KERNEL_SRCS := $(wildcard kernel/*.c)
+```
+- `KERNEL_SRCS` - variable name
+- `:=` - immediate assignment (evaluate now, not later)
+- `$(wildcard ...)` - function that finds files matching pattern
+- `kernel/*.c` - all `.c` files in `kernel/` directory
+
+```makefile
+KERNEL_OBJS := $(KERNEL_SRCS:.c=.o)
+```
+- `$(VAR:.c=.o)` - substitution: replace `.c` with `.o` in each word
+- If `KERNEL_SRCS` = `kernel/main.c kernel/terminal.c`
+- Then `KERNEL_OBJS` = `kernel/main.o kernel/terminal.o`
+
+### Pattern Rule
+
+```makefile
+%.o: %.c
+	$(CC) -c $< -o $@ $(CFLAGS)
+```
+- `%.o: %.c` - pattern rule: any `.o` depends on matching `.c`
+- `%` - wildcard that matches any stem (e.g., `kernel/main`)
+- `$(CC)` - compiler variable (your cross-compiler)
+- `-c` - compile only, don't link
+- `$<` - automatic variable: first prerequisite (`%.c`)
+- `-o $@` - output file; `$@` = target name (`%.o`)
+- `$(CFLAGS)` - compiler flags variable
+
+### Target Rule
+
+```makefile
+kernel: boot/boot.o $(KERNEL_OBJS)
+	$(CC) -T $(LD) -o $(KERNEL) $(LDFLAGS) $^ -lgcc
+```
+- `kernel:` - target name
+- `boot/boot.o $(KERNEL_OBJS)` - prerequisites (must exist first)
+- `$^` - automatic variable: all prerequisites
+- `-T $(LD)` - use linker script
+- `-lgcc` - link with libgcc
+
+### Automatic Variables Summary
+
+| Variable | Meaning |
+|----------|---------|
+| `$@` | Target name |
+| `$<` | First prerequisite |
+| `$^` | All prerequisites |
