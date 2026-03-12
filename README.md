@@ -12,9 +12,14 @@ jmOS/
 │   ├── boot.asm      # bootloader entry point
 │   └── NOTES.md      # notes on how boot.asm works
 ├── kernel/
-│   └── kernel.c      # bare metal C kernel with VGA text mode driver
+│   ├── kernel.c      # bare metal C kernel with VGA text mode driver
+│   └── NOTES.md      # notes on kernel implementation
+├── linker/
+│   ├── linker.ld     # linker script, controls memory layout
+│   └── NOTES.md      # notes on linker sections
 ├── Makefile
-└── CROSS_COMPILER.md # how to build the cross-compiler
+├── CROSS_COMPILER.md # how to build the cross-compiler
+└── LICENSE
 ```
 
 the kernel writes "Hello, kernel World!" to the screen using direct VGA memory writes at 0xB8000.
@@ -28,7 +33,7 @@ the kernel writes "Hello, kernel World!" to the screen using direct VGA memory w
 ```bash
 sudo apt install build-essential bison flex libgmp-dev libmpc-dev \
     libmpfr-dev texinfo libisl-dev nasm xorriso grub-pc-bin grub-common mtools \
-    wget curl 
+    qemu-system-x86 wget curl
 ```
 
 | Package | Purpose |
@@ -46,6 +51,7 @@ sudo apt install build-essential bison flex libgmp-dev libmpc-dev \
 | `grub-pc-bin` | GRUB x86 BIOS bootloader binaries, required for bootable ISO |
 | `grub-common` | GRUB shared utilities including `grub-mkrescue` and `grub-file` |
 | `mtools` | FAT filesystem tools, required by `grub-mkrescue` |
+| `qemu-system-x86` | x86 emulator for running the kernel with `make run` |
 
 **cross-compiler**: you need `i686-elf-gcc`. see [CROSS_COMPILER.md](CROSS_COMPILER.md) to build it.
 
