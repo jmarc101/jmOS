@@ -5,21 +5,28 @@ KERNEL     := $(OS_NAME)-$(OS_TARGET)
 ISO        := $(KERNEL).iso
 
 QEMU    := qemu-system-i386
-CC      := i686-elf-gcc
-CFLAGS  := -std=gnu99 -ffreestanding -O2 -Wall -Wextra
 AS      := nasm
 ASFLAGS := -felf32
 LD      := linker/linker.ld
 LDFLAGS := -ffreestanding -O2 -nostdlib
 
-.PHONY: boot clean all kernel iso
+CC          := i686-elf-gcc
+CFLAGS      := -std=gnu99 -ffreestanding -O2 -Wall -Wextra -Iinclude
+KERNEL_SRCS := $(wildcard kernel/*.c)
+LIB_SRCS    := $(wildcard lib/*.c)
+KERNEL_OBJS := $(KERNEL_SRCS:.c=.o)
+LIB_OBJS    := $(LIB_SRCS:.c=.o)
+
+
+
+.PHONY: boot clean all kernel iso run qemu
 
 run: all qemu
 
 all: kernel iso
 
 clean:
-	rm -f boot/boot.o kernel/kernel.o $(KERNEL) $(ISO)
+	rm -f boot/boot.o $(KERNEL_OBJS) $(LIB_OBJS) $(KERNEL) $(ISO)
 	rm -rf $(ISODIR)
 
 # Build bootable ISO image
@@ -57,7 +64,7 @@ boot/boot.o: boot/boot.asm
 kernel/kernel.o: kernel/kernel.c
 	$(CC) -c $< -o $@ $(CFLAGS)
 
-kernel: kernel/kernel.o boot/boot.o
+kernel: boot/boot.o	$(KERNEL_OBJS)	$(LIB_OBJS)
 	$(CC) -T $(LD) -o $(KERNEL) $(LDFLAGS) $^ -lgcc
 	@if grub-file --is-x86-multiboot $(KERNEL); then \
 		echo multiboot confirmed; \

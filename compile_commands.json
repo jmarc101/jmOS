@@ -1,0 +1,56 @@
+[
+  {
+    "arguments": [
+      "/home/jm/opt/cross/bin/i686-elf-gcc",
+      "-c",
+      "-std=gnu99",
+      "-ffreestanding",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-Iinclude",
+      "-o",
+      "kernel/kernel.o",
+      "kernel/kernel.c"
+    ],
+    "directory": "/home/jm/repo/jmOS",
+    "file": "/home/jm/repo/jmOS/kernel/kernel.c",
+    "output": "/home/jm/repo/jmOS/kernel/kernel.o"
+  },
+  {
+    "arguments": [
+      "/home/jm/opt/cross/bin/i686-elf-gcc",
+      "-std=gnu99",
+      "-ffreestanding",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-Iinclude",
+      "-c",
+      "-o",
+      "kernel/terminal.o",
+      "kernel/terminal.c"
+    ],
+    "directory": "/home/jm/repo/jmOS",
+    "file": "/home/jm/repo/jmOS/kernel/terminal.c",
+    "output": "/home/jm/repo/jmOS/kernel/terminal.o"
+  },
+  {
+    "arguments": [
+      "/home/jm/opt/cross/bin/i686-elf-gcc",
+      "-std=gnu99",
+      "-ffreestanding",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-Iinclude",
+      "-c",
+      "-o",
+      "lib/string.o",
+      "lib/string.c"
+    ],
+    "directory": "/home/jm/repo/jmOS",
+    "file": "/home/jm/repo/jmOS/lib/string.c",
+    "output": "/home/jm/repo/jmOS/lib/string.o"
+  }
+]
