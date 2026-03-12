@@ -9,20 +9,30 @@ personal OS dev learning project. following the osdev wiki.
 ```
 jmOS/
 ├── boot/
-│   ├── boot.asm      # bootloader entry point
-│   └── NOTES.md      # notes on how boot.asm works
+│   └── boot.asm         # multiboot bootloader entry point
+├── docs/
+│   ├── BOOT.md          # bootloader notes
+│   ├── CROSS_COMPILER.md
+│   ├── KERNEL.md        # kernel implementation notes
+│   ├── LINKER.md        # linker script notes
+│   └── MAKEFILE.md      # makefile syntax reference
+├── include/
+│   ├── string.h
+│   ├── terminal.h
+│   └── vga.h
 ├── kernel/
-│   ├── kernel.c      # bare metal C kernel with VGA text mode driver
-│   └── NOTES.md      # notes on kernel implementation
+│   ├── kernel.c         # kernel entry point
+│   └── terminal.c       # VGA terminal driver with scrolling
+├── lib/
+│   └── string.c         # string utilities (strlen)
 ├── linker/
-│   ├── linker.ld     # linker script, controls memory layout
-│   └── NOTES.md      # notes on linker sections
+│   └── linker.ld        # memory layout script
 ├── Makefile
-├── CROSS_COMPILER.md # how to build the cross-compiler
+├── ROAD_MAP.md
 └── LICENSE
 ```
 
-the kernel writes "Hello, kernel World!" to the screen using direct VGA memory writes at 0xB8000.
+the kernel initializes a VGA terminal driver with scrolling support and outputs test lines to demonstrate the scrolling functionality.
 
 ---
 
@@ -53,7 +63,7 @@ sudo apt install build-essential bison flex libgmp-dev libmpc-dev \
 | `mtools` | FAT filesystem tools, required by `grub-mkrescue` |
 | `qemu-system-x86` | x86 emulator for running the kernel with `make run` |
 
-**cross-compiler**: you need `i686-elf-gcc`. see [CROSS_COMPILER.md](CROSS_COMPILER.md) to build it.
+**cross-compiler**: you need `i686-elf-gcc`. see [docs/CROSS_COMPILER.md](docs/CROSS_COMPILER.md) to build it.
 
 verify its working:
 
@@ -104,13 +114,28 @@ make run
 
 ---
 
+## docs/
+
+notes and lessons learned along the way:
+
+| File | Topic |
+|------|-------|
+| [BOOT.md](docs/BOOT.md) | how grub loads the kernel, multiboot header, protected mode |
+| [KERNEL.md](docs/KERNEL.md) | kernel development notes, cross-compiler, VGA driver |
+| [LINKER.md](docs/LINKER.md) | what the linker does, sections, memory layout |
+| [MAKEFILE.md](docs/MAKEFILE.md) | makefile syntax reference |
+| [CROSS_COMPILER.md](docs/CROSS_COMPILER.md) | why you need a cross-compiler, how to build i686-elf-gcc |
+
+---
+
 ## coming back?
 
 lost after a break? start here:
 
-- **what does boot.asm do?** read `boot/NOTES.md`
-- **what does kernel.c do?** VGA text mode driver, writes directly to video memory
-- **cross-compiler broken?** check your `$PATH`, see `CROSS_COMPILER.md`
+- **what does boot.asm do?** read [docs/BOOT.md](docs/BOOT.md)
+- **what does kernel.c do?** VGA text mode driver, writes directly to video memory. see [docs/KERNEL.md](docs/KERNEL.md)
+- **cross-compiler broken?** check your `$PATH`, see [docs/CROSS_COMPILER.md](docs/CROSS_COMPILER.md)
+- **what's the roadmap?** see [ROAD_MAP.md](ROAD_MAP.md)
 - **osdev wiki:** https://wiki.osdev.org/Main_Page
 
 ---
