@@ -1,6 +1,9 @@
 # GDT + Ring Switching
 
-Wiki Reference: https://wiki.osdev.org/GDT_Tutorial
+Wiki References:
+- https://wiki.osdev.org/GDT_Tutorial
+- https://wiki.osdev.org/Global_Descriptor_Table
+
 
 ## Why any of this exists
 
