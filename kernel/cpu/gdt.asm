@@ -2,6 +2,9 @@
 ; called from C as: gdt_flush(uint32_t gdtr_address)
 ; separate asm file because C can't do a far jump (only way to reload CS)
 ; 'global' makes it visible to the linker so C can call it
+
+; [BITS 32] tells NASM to encode all instructions as 32-bit.
+; without it NASM defaults to 16-bit and encodes instructions wrong.
 [BITS 32]
 global gdt_flush
 

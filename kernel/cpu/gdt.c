@@ -93,5 +93,7 @@ void gdt_init()
   gdtr.limit = (sizeof(entries) - 1);
   // Array name => pointer, we jsut cast it.
   gdtr.base = (uint32_t)entries;
+
+  gdt_flush((uint32_t)&gdtr);
 }
 
