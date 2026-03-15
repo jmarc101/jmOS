@@ -9,24 +9,30 @@ personal OS dev learning project. following the osdev wiki.
 ```
 jmOS/
 ├── boot/
-│   └── boot.asm         # multiboot bootloader entry point
+│   └── boot.asm            # multiboot bootloader entry point
 ├── docs/
-│   ├── BOOT.md          # bootloader notes
-│   ├── CROSS_COMPILER.md
-│   ├── KERNEL.md        # kernel implementation notes
-│   ├── LINKER.md        # linker script notes
-│   └── MAKEFILE.md      # makefile syntax reference
+│   ├── ACRONYMS.md         # OS dev terminology
+│   ├── BOOT.md             # bootloader notes
+│   ├── CROSS_COMPILER.md   # cross-compiler setup
+│   ├── GLOBAL_DESCRIPTOR_TABLE.md
+│   ├── KERNEL.md           # kernel implementation notes
+│   ├── LINKER.md           # linker script notes
+│   └── MAKEFILE.md         # makefile syntax reference
 ├── include/
 │   ├── string.h
 │   ├── terminal.h
 │   └── vga.h
 ├── kernel/
-│   ├── kernel.c         # kernel entry point
-│   └── terminal.c       # VGA terminal driver with scrolling
+│   ├── cpu/                # x86 CPU state management
+│   │   ├── gdt.c           # Global Descriptor Table setup
+│   │   └── gdt.asm         # GDT flush (loads via LGDT)
+│   ├── drivers/            # hardware drivers
+│   │   └── terminal.c      # VGA terminal driver with scrolling
+│   └── kernel.c            # kernel entry point
 ├── lib/
-│   └── string.c         # string utilities (strlen)
+│   └── string.c            # string utilities (strlen)
 ├── linker/
-│   └── linker.ld        # memory layout script
+│   └── linker.ld           # memory layout script
 ├── Makefile
 ├── ROAD_MAP.md
 └── LICENSE

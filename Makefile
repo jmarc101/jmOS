@@ -12,9 +12,15 @@ LDFLAGS := -ffreestanding -O2 -nostdlib
 
 CC          := i686-elf-gcc
 CFLAGS      := -std=gnu99 -ffreestanding -O2 -Wall -Wextra -Iinclude
-KERNEL_SRCS := $(wildcard kernel/*.c)
+
+# Source files
+KERNEL_SRCS := $(wildcard kernel/*.c) $(wildcard kernel/cpu/*.c) $(wildcard kernel/drivers/*.c)
+CPU_ASM_SRCS := $(wildcard kernel/cpu/*.asm)
 LIB_SRCS    := $(wildcard lib/*.c)
+
+# Object files
 KERNEL_OBJS := $(KERNEL_SRCS:.c=.o)
+CPU_ASM_OBJS := $(CPU_ASM_SRCS:.asm=.o)
 LIB_OBJS    := $(LIB_SRCS:.c=.o)
 
 
@@ -26,7 +32,7 @@ run: all qemu
 all: kernel iso
 
 clean:
-	rm -f boot/boot.o $(KERNEL_OBJS) $(LIB_OBJS) $(KERNEL) $(ISO)
+	rm -f boot/boot.o $(KERNEL_OBJS) $(CPU_ASM_OBJS) $(LIB_OBJS) $(KERNEL) $(ISO)
 	rm -rf $(ISODIR)
 
 # Build bootable ISO image
@@ -64,7 +70,11 @@ boot/boot.o: boot/boot.asm
 kernel/kernel.o: kernel/kernel.c
 	$(CC) -c $< -o $@ $(CFLAGS)
 
-kernel: boot/boot.o	$(KERNEL_OBJS)	$(LIB_OBJS)
+# Generic rule for kernel/cpu/*.asm files
+kernel/cpu/%.o: kernel/cpu/%.asm
+	$(AS) $(ASFLAGS) $< -o $@
+
+kernel: boot/boot.o $(KERNEL_OBJS) $(CPU_ASM_OBJS) $(LIB_OBJS)
 	$(CC) -T $(LD) -o $(KERNEL) $(LDFLAGS) $^ -lgcc
 	@if grub-file --is-x86-multiboot $(KERNEL); then \
 		echo multiboot confirmed; \
